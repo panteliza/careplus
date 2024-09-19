@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
+import { createUser } from "@/lib/actions/patient.actions";
 import { UserFormValidation } from "@/lib/validation";
+
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
@@ -35,11 +37,11 @@ export const PatientForm = () => {
         phone: values.phone,
       };
 
-      // You can replace this block with any further processing logic
-      console.log("Form submitted:", user);
+      const newUser = await createUser(user);
 
-      // For instance, redirect the user to a different page
-      router.push(`/patients/success`);
+      if (newUser) {
+        router.push(`/patients/${newUser.$id}/register`);
+      }
     } catch (error) {
       console.log(error);
     }
